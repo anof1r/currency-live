@@ -1,0 +1,10 @@
+<h1 style="text-align: center;">{{title}}</h1>
+<div style="display: flex; align-items: center; justify-content: center; flex-direction: column;
+justify-content: space-between;">
+  <span style="font-size: 50px;">{{ dateTime| async |date:'HH:mm:ss' }}</span>
+  <span style="font-size: 30px;">{{ dateTime| async | date:'MM.d.y' }}</span>
+</div>
+<button (click)="addCurrencies"> ADD MORE</button>
+<li *ngFor="let name of currencyNameArr">
+  <app-currency [curName]="name"></app-currency>
+</li>
