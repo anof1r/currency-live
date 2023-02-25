@@ -10,14 +10,15 @@ import { switchMap, map } from 'rxjs/operators'
 })
 
 export class CurrencyComponent implements OnInit, OnDestroy {
-  data: any
+  data: any // TODO: pipe this stuff to angular currency
   timerSubscription!: Subscription
-  @Input() curName: any // refactor type
+  @Input() curName: any // TODO: refactor type + var names
 
   constructor(private _apiservice: APIService) { }
 
   ngOnInit() {
-    this.timerSubscription = timer(0, 10000).pipe(
+    // TODO: dont forget to change intervalDuration to 5000
+    this.timerSubscription = timer(0, 20000).pipe(
       switchMap(() => {
         return this.data = this._apiservice.getData(this.curName);
       })
