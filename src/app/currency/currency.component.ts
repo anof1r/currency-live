@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-currency',
@@ -14,5 +14,10 @@ export class CurrencyComponent {
   currencyValue: number
   @Input()
   currencyChange: number
-
+  @Output()
+  currencyToDeleteSelected = new EventEmitter<string>();
+  // TODO: Add trash cans icon
+  deleteCurrency(name: string) {
+    this.currencyToDeleteSelected.emit(name)
+  }
 }

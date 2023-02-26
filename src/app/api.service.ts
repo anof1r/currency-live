@@ -7,7 +7,7 @@ import { APICurrencyData } from './app.component';
 })
 export class APIService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) { } //TODO: move api key to .env variable
 
   getData(currencies: string[]): Observable<APICurrencyData> {
     return this._http.get(`https://api.freecurrencyapi.com/v1/latest?apikey=pUmY7lkTS16mVDzexV4reWg4IiDiD742bqc9o9tb&currencies=${currencies.join(',')}&base_currency=RUB`) as Observable<APICurrencyData>

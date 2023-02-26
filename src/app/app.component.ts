@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { APIService } from './api.service';
 // TODO: move to type directory and import here
-
-interface CurrencyChanges {
+// TODO: Eslint
+// TODO: adaptive css
+interface CurrencyExchangeRate {
   USD: number,
   EUR: number,
   GBP: number,
@@ -12,6 +13,10 @@ interface CurrencyChanges {
   JPY: number,
   TRY: number,
 }
+
+type CurrencyName = keyof CurrencyExchangeRate
+
+interface CurrencyChanges extends CurrencyExchangeRate { }
 
 export interface APICurrencyData {
   data: {
@@ -33,24 +38,23 @@ export class AppComponent implements OnInit {
 
   title = 'Currency RUB';
   dateTime: Date = new Date();
-  basicCurrenciesArray: Array<keyof CurrencyChanges> = ['USD','EUR', 'GBP']
-  additionalCurrencies: Array<keyof CurrencyChanges> = ['CNY', 'JPY', 'TRY']
-  selectedCurrency: keyof CurrencyChanges
-  data: APICurrencyData = {data: {}}
+  currentCurrencies: Array<CurrencyName> = ['USD', 'EUR', 'GBP']
+  additionalCurrencies: Array<CurrencyName> = ['CNY', 'JPY', 'TRY']
+  data: APICurrencyData = { data: {} }
   timerSubscription!: Subscription
-  currencyChanges: CurrencyChanges = { USD: 0, EUR: 0, GBP: 0, CNY: 0, JPY: 0, TRY: 0};
+  currencyChanges: CurrencyChanges = { USD: 0, EUR: 0, GBP: 0, CNY: 0, JPY: 0, TRY: 0 };
 
   constructor(private _apiservice: APIService) { }
 
   ngOnInit() {
-    this.timerSubscription = timer(0, 5000).pipe(
+    this.timerSubscription = timer(0, 400000).pipe(
       switchMap(() => {
-        const data = this._apiservice.getData(this.basicCurrenciesArray);
+        const data = this._apiservice.getData(this.currentCurrencies);
         return data
       })
     ).subscribe(newData => {
       Object.keys(newData.data).forEach((key: string) => {
-        const currencyKey = key as typeof this.basicCurrenciesArray[number] // ts cannot provide valid type for 'key'
+        const currencyKey = key as typeof this.currentCurrencies[number] // ts cannot provide valid type for 'key'
         newData.data[currencyKey] = +(1 / (newData.data[currencyKey] || 1)).toFixed(2);
         this.currencyChanges[currencyKey] = newData.data[currencyKey] as number - (this.data.data[currencyKey] || newData.data[currencyKey] as number)
       });
@@ -59,16 +63,18 @@ export class AppComponent implements OnInit {
     });
   }
 
-  changeSelectedCurrency(value: string) {
-    this.selectedCurrency = value as keyof CurrencyChanges // ts cannot provide valid type for 'value' from onChange
+  addCurrencies(addCurrencie: string) {
+    const currency = addCurrencie as CurrencyName
+    this._apiservice.getData([currency]).subscribe(newCurrencyData => {
+      this.data.data[currency] = +(1 / (newCurrencyData.data[currency] || 1)).toFixed(2);
+      this.currentCurrencies.push(currency as keyof CurrencyChanges)
+      this.additionalCurrencies = this.additionalCurrencies.filter(cur => cur !== currency)
+    });
   }
 
-  addCurrencies() {
-    this._apiservice.getData([this.selectedCurrency]).subscribe(newCurrencyData => {
-      this.data.data[this.selectedCurrency] = +(1 / (newCurrencyData.data[this.selectedCurrency] || 1)).toFixed(2);
-      this.basicCurrenciesArray.push(this.selectedCurrency)
-      this.additionalCurrencies = this.additionalCurrencies.filter(cur => cur !== this.selectedCurrency)
-    });
+  deleteCurrency(currencyToDelete: string) {
+    this.currentCurrencies = this.currentCurrencies.filter(el => el !== currencyToDelete)
+    this.additionalCurrencies.push(currencyToDelete as CurrencyName)
   }
 
   ngOnDestroy(): void {

@@ -1,9 +1,13 @@
-<div>
-  <h2>{{currencyName}}</h2>
-  {{ currencyValue }}
-  <span *ngIf="currencyChange > 0">&#8593; (+{{currencyChange}})</span>
-  <span *ngIf="currencyChange < 0">&#8595; ({{currencyChange}})</span>
-  <span *ngIf="currencyChange === 0">&nbsp;&nbsp;(0.00)</span>
+<div class="content-wrapper">
+  <div class="currency-item">
+    <span>{{currencyName}}</span>
+    <span>{{currencyValue}}</span>
+    <span *ngIf="currencyChange > 0"> &#8593;</span>
+    <span *ngIf="currencyChange > 0"> (+{{currencyChange}})</span>
+    <span *ngIf="currencyChange < 0"> &#8595; </span>
+    <span *ngIf="currencyChange < 0"> ({{currencyChange}})</span>
+    <span *ngIf="currencyChange === 0"> (0.00)</span>
+    <img class="delete-img" src="../../assets/svg/delete.svg" (click)="deleteCurrency(currencyName)">
+  </div>
 </div>
 <!-- TODO: wrap into Angular Material Divider component -->
-
