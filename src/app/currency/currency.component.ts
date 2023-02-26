@@ -9,15 +9,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class CurrencyComponent {
 
   @Input()
-  currencyName: string
+  currencyName: string;
   @Input()
-  currencyValue: number
+  currencyValue: number;
   @Input()
-  currencyChange: number
+  currencyChange: number;
   @Output()
   currencyToDeleteSelected = new EventEmitter<string>();
   // TODO: Add trash cans icon
   deleteCurrency(name: string) {
-    this.currencyToDeleteSelected.emit(name)
+    this.currencyToDeleteSelected.emit(name);
   }
 }
