@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable, tap } from 'rxjs';
+import { APICurrencyData } from './app.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,11 +9,7 @@ export class APIService {
 
   constructor(private _http: HttpClient) { }
 
-  getData(from: string): Observable<any> {
-    return this._http.get(`https://api.freecurrencyapi.com/v1/latest?apikey=v6Wv3jVhD2AAO4s7GuMMPbZocVGUPrsuKvsguas2&currencies=RUB&base_currency=${from}`).pipe(
-      tap(data => JSON.stringify(data))
-    )
+  getData(currencies: string[]): Observable<APICurrencyData> {
+    return this._http.get(`https://api.freecurrencyapi.com/v1/latest?apikey=pUmY7lkTS16mVDzexV4reWg4IiDiD742bqc9o9tb&currencies=${currencies.join(',')}&base_currency=RUB`) as Observable<APICurrencyData>
   }
 }
-
-

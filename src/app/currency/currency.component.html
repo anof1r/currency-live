@@ -1,2 +1,9 @@
-<p>{{curName}} => {{ data.data.RUB }} </p>
+<div>
+  <h2>{{currencyName}}</h2>
+  {{ currencyValue }}
+  <span *ngIf="currencyChange > 0">&#8593; (+{{currencyChange}})</span>
+  <span *ngIf="currencyChange < 0">&#8595; ({{currencyChange}})</span>
+  <span *ngIf="currencyChange === 0">&nbsp;&nbsp;(0.00)</span>
+</div>
 <!-- TODO: wrap into Angular Material Divider component -->
+

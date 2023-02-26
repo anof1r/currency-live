@@ -1,7 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, timer } from 'rxjs';
-import { APIService } from '../api.service';
-import { switchMap, map } from 'rxjs/operators'
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-currency',
@@ -9,23 +6,13 @@ import { switchMap, map } from 'rxjs/operators'
   styleUrls: ['./currency.component.scss']
 })
 
-export class CurrencyComponent implements OnInit, OnDestroy {
-  data: any // TODO: pipe this stuff to angular currency
-  timerSubscription!: Subscription
-  @Input() curName: any // TODO: refactor type + var names
+export class CurrencyComponent {
 
-  constructor(private _apiservice: APIService) { }
+  @Input()
+  currencyName: string
+  @Input()
+  currencyValue: number
+  @Input()
+  currencyChange: number
 
-  ngOnInit() {
-    // TODO: dont forget to change intervalDuration to 5000
-    this.timerSubscription = timer(0, 20000).pipe(
-      switchMap(() => {
-        return this.data = this._apiservice.getData(this.curName);
-      })
-    ).subscribe(res => this.data = res);
-  }
-
-  ngOnDestroy(): void {
-    this.timerSubscription.unsubscribe();
-  }
 }
