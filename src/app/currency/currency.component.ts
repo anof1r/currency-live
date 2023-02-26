@@ -16,7 +16,7 @@ export class CurrencyComponent {
   currencyChange: number;
   @Output()
   currencyToDeleteSelected = new EventEmitter<string>();
-  // TODO: Add trash cans icon
+
   deleteCurrency(name: string) {
     this.currencyToDeleteSelected.emit(name);
   }

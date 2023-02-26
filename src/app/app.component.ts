@@ -3,9 +3,7 @@ import { Subscription, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { APIService } from './api.service';
 import { APICurrencyData, CurrencyChanges, CurrencyName } from './types';
-// TODO: Eslint
 // TODO: adaptive css
-// TODO: .env
 // TODO: select like button css
 
 @Component({
