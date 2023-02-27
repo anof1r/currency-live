@@ -1,6 +1,6 @@
 # ExchangeRate
 
-This project is a test task from YADRO company [Angular CLI]
+This project is a test task from YADRO company
 
 ## Development server
 
