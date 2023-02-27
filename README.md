@@ -26,3 +26,9 @@ Navigate to `https://anof1r.github.io/currency-live/` to see the deployed versio
 - You can delete necessary currency by clicking on delete button
 - Adaptive layout for mobile devices
 - ESLint
+
+## Known Issues
+
+- '+' option in select appears in Safari browser even if display is none
+- '+' color is blue in Safari browser
+- Sometimes it takes a while for application to add new currency (mb API problem), if this happens and user will try to add selected currency one more time, there will be duplicated currencies in a list
