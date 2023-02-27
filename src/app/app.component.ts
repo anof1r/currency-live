@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, timer } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subject, Subscription, timer } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { APIService } from './api.service';
 import { APICurrencyData, CurrencyChanges, CurrencyName } from './types';
 
@@ -18,6 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   data: APICurrencyData = { data: {} };
   timerSubscription!: Subscription;
   currencyChanges: CurrencyChanges = { USD: 0, EUR: 0, GBP: 0, CNY: 0, JPY: 0, TRY: 0 };
+  destroy: Subject<boolean> = new Subject<boolean>();
 
   constructor(private _apiservice: APIService) { }
 
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
       switchMap(() => {
         const data = this._apiservice.getData(this.currentCurrencies);
         return data;
-      })
+      }),
+      takeUntil(this.destroy)
     ).subscribe(newData => {
       Object.keys(newData.data).forEach((key: string) => {
         const currencyKey = key as typeof this.currentCurrencies[number]; // ts cannot provide valid type for 'key'
@@ -53,7 +55,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.timerSubscription.unsubscribe();
+    this.destroy.next(true);
+    this.destroy.complete();
+    // this.timerSubscription.unsubscribe();
   }
 
 }
