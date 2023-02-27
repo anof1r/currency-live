@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private _apiservice: APIService) { }
 
   ngOnInit() {
-    this.timerSubscription = timer(0, 400000).pipe(
+    this.timerSubscription = timer(0, 5000).pipe(
       switchMap(() => {
         const data = this._apiservice.getData(this.currentCurrencies);
         return data;
