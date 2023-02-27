@@ -1,13 +1,13 @@
 <header class="header">
   <h1>{{title}}</h1>
   <p>{{ dateTime | date:'dd.MM.YYYY HH.mm.ss' }}</p>
-  <select #names (change)="addCurrencies(names.value)">
-    <option #default style="display: none;">Add</option>
-    <option *ngFor="let cur of additionalCurrencies"
-      [value]="cur">
-    {{cur}}
-  </option>
-  </select>
+    <select #names (change)="addCurrencies(names.value)" class="currencie-select">
+      <option #default style="display: none;">+</option>
+      <option *ngFor="let cur of additionalCurrencies"
+        [value]="cur">
+      {{cur}}
+    </option>
+    </select>
 </header>
 
 <div *ngFor="let name of currentCurrencies">
